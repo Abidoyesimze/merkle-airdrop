@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.9"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "crypto": "^1.0.1",
+    "csv-parser": "^3.0.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.32"
+  }
+}
