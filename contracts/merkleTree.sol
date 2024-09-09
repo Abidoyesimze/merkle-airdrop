@@ -4,6 +4,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol"; 
 
 error accessRestricted();
+error alreadyClaimed();
 
 contract merkleAirdrop{
     IERC20 public token;
@@ -33,13 +34,17 @@ contract merkleAirdrop{
      event AirdropClaimed(address indexed claimant, uint256 amount); 
 
     function claimAirdrop(uint256 _amount, bytes32[] calldata _merkleProof) external {
-        require(!hasClaimed[msg.sender], "Airdrop already claimed");
+        if(Claimed[msg.sender].amount != 0){
+            revert alreadyClaimed();
+        }
+        
 
       bytes32 leaf = keccak256(abi.encodePacked(msg.sender, _amount));
 
      require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid Merkle proof");
     
-     hasClaimed[msg.sender] = true;
+     Claimed[msg.sender].amount = _amount;
+     Claimed[msg.sender].owner = msg.sender;
       require(token.transfer(msg.sender, _amount), "Token transfer failed");
 
         
